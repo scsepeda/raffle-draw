@@ -1,0 +1,267 @@
+body {
+    margin: 0;
+    padding: 0;
+    max-height: 100vh;
+    background-image: url("bg-image.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: repeat;
+    overflow: visible;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.gif-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#gif {
+    display: none;
+}
+
+
+#raffle-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+.raffle-item {
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    background-color: rgba(255, 255, 255, 0.5);
+    opacity: 1;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex-basis: calc(300% -(300%/5));
+    flex-grow: 1;
+}
+
+.raffle-item:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+
+.topnav {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 0px;
+}
+
+.topnav #links {
+    display: none;
+    margin-top: 29px;
+}
+
+.topnav a {
+    color: white;
+    padding: 8px 10px;
+    text-decoration: none;
+    font-size: 14px;
+    display: block;
+    opacity: 0.3;
+}
+
+.topnav a.icon {
+    background: black;
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    min-height: 13px;
+    font-size: xx-small;
+}
+
+.topnav a:hover {
+    opacity: 0.8;
+    background-color: #ddd;
+    color: black;
+}
+
+.topnav:active,
+.topnav:focus {
+    cursor: pointer;
+    color: black;
+}
+
+.undo {
+    width: 9em;
+    color: white;
+    background-color: #B54D43;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    display: block;
+    border: none;
+    border-width: 0;
+    border: 0;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.undo:hover {
+    cursor: pointer;
+    background-color: #EAAB91;
+    color: black;
+}
+
+.undo:active,
+.undo:focus {
+    cursor: pointer;
+    background-color: #B54D43;
+    color: white;
+}
+
+.add {
+    width: 9em;
+    color: white;
+    background-color: #248A1F;
+    padding: 8px 10px 8px 10px;
+    text-decoration: none;
+    font-size: 17px;
+    display: block;
+    border: none;
+    border-width: 0;
+    border: 0;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.add:hover {
+    cursor: pointer;
+    background-color: #6FE66A;
+    color: black;
+}
+
+.add:active,
+.add:focus {
+    cursor: pointer;
+    background-color: #248A1F;
+    color: white;
+}
+
+#quantity {
+    margin-top: 3px;
+    height: 1.7em;
+    width: 9em;
+    font-size: 0.8em;
+    border: 0.5px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.reset {
+    width: 9em;
+    color: white;
+    background-color: #1769A1;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    display: block;
+    border: none;
+    border-width: 0;
+    border: 0;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.reset:hover {
+    cursor: pointer;
+    background-color: #5CB6F3;
+    color: black;
+}
+
+.reset:active,
+.reset:focus {
+    cursor: pointer;
+    background-color: #1769A1;
+    color: white;
+}
+
+.bg {
+    width: 9em;
+    padding: 8px 10px 8px 10px;
+    color: white;
+    background-color: #757575;
+    text-decoration: none;
+    font-size: 17px;
+    display: block;
+    border: none;
+    border-width: 0;
+    border: 0;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.bg:hover {
+    cursor: pointer;
+    background-color: #BCBCBC;
+    color: black;
+}
+
+.bg:active,
+.bg:focus {
+    cursor: pointer;
+    background-color: #757575;
+    color: white;
+}
+
+#bg-input {
+    margin-top: 3px;
+    height: 1.7em;
+    width: 9em;
+    font-size: 0.8em;
+    border: 0.5px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+
+.count {
+    width: 9em;
+    padding: 8px 10px 12px 10px;
+    color: white;
+    background-color: #757575;
+    text-decoration: none;
+    font-size: 17px;
+    display: block;
+    border: none;
+    border-width: 0;
+    border: 0;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.count:hover {
+    cursor: pointer;
+    background-color: #BCBCBC;
+    color: black;
+}
+
+.count:active,
+.count:focus {
+    cursor: pointer;
+    background-color: #757575;
+    color: white;
+}
+
+#count-input {
+    margin-top: 3px;
+    height: 1.7em;
+    width: 9em;
+    font-size: 0.8em;
+    border: 0.5px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}

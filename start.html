@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="car-raffle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+</head>
+
+<body>
+    <div id="raffle-container"></div>
+    <div id="topnav" class="topnav">
+        <div id="links">
+            <button id="add-btn" class="add">Add <i class="fa fa-plus-circle"></i>
+                <input type="number" id="quantity" name="quantity" min="1" placeholder="Enter number till" value="" />
+            </button>
+            <button id="undo-btn" class="undo">Undo <i class="fa fa-undo"></i></button>
+            <button id="reset-btn" class="reset" onclick="resetRaffle()">Reset <i class="fa fa-refresh"></i></button>
+            <button id="bg-btn" class="bg">Change <i class="fa fa-picture-o"></i>
+                <input type="text" id="bg-input" placeholder="Enter image path" />
+            </button>
+            <button id="count-btn" class="count">Max Draws <i class="fa fa-cog"></i>
+                <input type="number" id="count-input" min="1" placeholder="Enter max draws" />
+            </button>
+        </div>
+        <a href="javascript:void(0);" class="icon" onclick="burgerMenu()">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
+    <div class="gif-container">
+        <img id="gif" src="pop.gif" alt="Congratulations!">
+    </div>
+    <script>
+        const inputs = document.querySelectorAll("#links input");
+        inputs.forEach(input => {
+            input.addEventListener("click", function (event) {
+                event.stopPropagation();
+            });
+        });
+
+        let bgBtnClicks = 0;
+        var raffleCount = 1000;
+        const bgBtn = document.getElementById('bg-btn');
+        bgBtn.addEventListener("click", function () {
+            bgBtnClicks++;
+            if (bgBtnClicks = 2 && raffleContainerContains(`${document.getElementById('bg-input').value}`) === false && document.getElementById('bg-input').value.trim() != "") {
+
+                const bgInput = document.getElementById('bg-input');
+                const body = document.getElementsByTagName('body')[0];
+                const bgUrl = bgInput.value;
+                body.style.backgroundImage = `url(${bgUrl})`;
+                burgerMenu();
+            }
+        });
+
+        const countBtn = document.getElementById('count-btn');
+        const addBtn = document.getElementById('add-btn');
+        let quantityInput = document.getElementById('quantity');
+        quantityInput.placeholder = "Enter up to " + raffleCount;
+        const undoBtn = document.getElementById('undo-btn');
+        const raffleContainer = document.querySelector("#raffle-container");
+        const topnavContainer = document.querySelector("#topnav");
+
+        var lastRemovedBox;
+
+        for (let i = 1; i <= raffleCount; i++) {
+            const raffleItem = document.createElement("div");
+            raffleItem.classList.add("raffle-item");
+            raffleItem.textContent = `${i}`;
+            raffleItem.addEventListener("click", function () {
+                this.remove();
+                resizeGrid();
+                lastRemovedBox = i;
+
+                if (document.querySelectorAll(".raffle-item").length === 0) {
+                    const gif = document.getElementById("gif");
+                    gif.style.display = "block";
+                }
+            });
+            raffleContainer.appendChild(raffleItem);
+        }
+        sortDivsByTextContent();
+        function resizeGrid() {
+            const container = document.querySelector('#raffle-container');
+            const boxes = document.querySelectorAll('.raffle-item');
+            const boxCount = boxes.length;
+            const containerWidth = container.clientWidth;
+            const containerHeight = container.clientHeight;
+            const boxSize = Math.floor(
+                Math.sqrt((containerWidth * containerHeight) / boxCount)
+            );
+            boxes.forEach((box) => {
+
+                if (boxCount > 99) box.style.width = boxSize - (boxSize / 10) + 'px';
+                else if (boxCount > 50 && boxCount < 99) box.style.width = boxSize - (boxSize / 6) + 'px';
+                else box.style.width = boxSize - (boxSize / 3) + 'px';
+                if (boxCount < 99) box.style.height = boxSize - (boxSize / 10) + 'px';
+                else box.style.height = boxSize - (boxSize / 14) + 'px';
+                const fontSize = Math.floor(boxSize / 2);
+                box.style.fontSize = `${fontSize}px`;
+            });
+        }
+
+        window.addEventListener('resize', resizeGrid);
+        document.addEventListener('DOMContentLoaded', resizeGrid);
+        let addBtnClicks = 0;
+
+        addBtn.addEventListener("click", function () {
+            addBtnClicks++;
+            if (addBtnClicks = 2 && raffleContainerContains(`${document.getElementById('quantity').value}`) === false && document.getElementById('quantity').value > 0 && document.getElementById('quantity').value <= raffleCount) {
+                addBox(document.getElementById('quantity').value);
+                burgerMenu();
+            }
+        });
+
+
+        undoBtn.addEventListener("click", function () {
+            if (raffleContainerContains(`${lastRemovedBox}`) === false && lastRemovedBox != undefined) {
+                undoRemoveBox(lastRemovedBox);
+            }
+            burgerMenu();
+        });
+
+        function burgerMenu() {
+            var x = document.getElementById('links');
+            if (x.style.display === "block") {
+                addBtnClicks = 0;
+                countBtnClicks = 0;
+                bgBtnClicks = 0;
+                quantityInput.placeholder = "Enter up to " + raffleCount;
+
+                if (document.querySelectorAll(".raffle-item").length === 0) {
+                    const gif = document.getElementById("gif");
+                    gif.style.display = "none";
+                }
+                x.style.display = "none";
+            } else {
+                x.style.display = "block";
+            }
+        }
+
+
+        function addBox(boxNumber) {
+            var z = document.createElement("div");
+            z.classList.add("raffle-item");
+            z.textContent = `${boxNumber}`;
+            z.addEventListener("click", function () {
+                this.remove();
+                resizeGrid();
+                lastRemovedBox = boxNumber;
+                if (document.querySelectorAll(".raffle-item").length === 0) {
+                    const gif = document.getElementById("gif");
+                    gif.style.display = "block";
+                }
+            });
+            raffleContainer.appendChild(z);
+            sortDivsByTextContent();
+            resizeGrid();
+            if (document.querySelectorAll(".raffle-item").length > 0) {
+                const gif = document.getElementById("gif");
+                gif.style.display = "none";
+            }
+        }
+
+        function undoRemoveBox(boxNumber) {
+            var z = document.createElement("div");
+            z.classList.add("raffle-item");
+            z.textContent = `${boxNumber}`;
+            z.addEventListener("click", function () {
+                this.remove();
+                resizeGrid();
+                lastRemovedBox = boxNumber;
+                if (document.querySelectorAll(".raffle-item").length === 0) {
+                    const gif = document.getElementById("gif");
+                    gif.style.display = "block";
+                }
+            });
+            raffleContainer.appendChild(z);
+            sortDivsByTextContent();
+            resizeGrid();
+            if (document.querySelectorAll(".raffle-item").length > 0) {
+                const gif = document.getElementById("gif");
+                gif.style.display = "none";
+            }
+        }
+
+        function resetRaffle() {
+            location.reload(true);
+            location.href = location.href + "?zoom=100%";
+
+        }
+
+        function sortDivsByTextContent() {
+            const container = document.querySelector('#raffle-container');
+            const divs = Array.from(container.querySelectorAll('.raffle-item'));
+            divs.sort((a, b) => {
+                const aText = parseInt(a.textContent);
+                const bText = parseInt(b.textContent);
+                if (aText < bText) return -1;
+                if (aText > bText) return 1;
+                return 0;
+            });
+            divs.forEach(div => container.appendChild(div));
+        }
+
+        function raffleContainerContains(textContent) {
+            const children = raffleContainer.childNodes;
+            for (let i = 0; i < children.length; i++) {
+                if (children[i].textContent === textContent) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        let countBtnClicks = 0;
+
+        countBtn.addEventListener("click", function () {
+            countBtnClicks++;
+            if (countBtnClicks = 2 && document.getElementById('count-input').value > 0 && document.getElementById('count-input').value <= 1000) {
+                const countInput = document.getElementById('count-input');
+                const newCount = parseInt(countInput.value);
+                raffleCount = newCount;
+                while (raffleContainer.firstChild) {
+                    raffleContainer.removeChild(raffleContainer.firstChild);
+                }
+                for (let i = 1; i <= raffleCount; i++) {
+                    addBox(i);
+                }
+                burgerMenu();
+
+            } else if (countBtnClicks = 2 && parseInt(document.getElementById('count-input').value) > 1000) {
+                alert('Value cannot be greater than 1000.');
+            }
+        });
+
+        function isPrime(num) {
+            for (let i = 2; i < num; i++)
+                if (num % i === 0) return false;
+            return num > 1;
+        }
+
+    </script>
+
+</body>
+
+</html>
